@@ -1,0 +1,6 @@
+@SportBookApi_HostAddress = http://localhost:5286
+
+GET {{SportBookApi_HostAddress}}/SportBookApi/
+Accept: application/json
+
+###
