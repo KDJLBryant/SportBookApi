@@ -73,6 +73,37 @@ namespace SportBookApi.Model
             }
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO userDto)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    User updatedUser = await _repository.UpdateUserAsync(id, userDto);
+
+                    if (updatedUser == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        return CreatedAtAction(nameof(GetUser), new { id = updatedUser.Id }, updatedUser);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500);
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)

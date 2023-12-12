@@ -72,6 +72,37 @@ namespace SportBookApi.Model
             }
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateBooking(int id, [FromBody] BookingDTO bookingDto)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Booking updatedBooking = await _repository.UpdateBookingAsync(id, bookingDto);
+
+                    if (updatedBooking == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        return CreatedAtAction(nameof(GetBooking), new { id = updatedBooking.Id }, updatedBooking);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500);
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<Booking>> DeleteBooking(int id)

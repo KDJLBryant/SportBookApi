@@ -114,7 +114,7 @@ namespace SportBookApi.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,7 +143,7 @@ namespace SportBookApi.Migrations
                         column: x => x.SportTypeId,
                         principalTable: "SportTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,19 +161,14 @@ namespace SportBookApi.Migrations
                         column: x => x.BookingsId,
                         principalTable: "Bookings",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BookingUser_Users_UsersId",
                         column: x => x.UsersId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingUser_UsersId",
-                table: "BookingUser",
-                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_FacilityId",
@@ -184,6 +179,11 @@ namespace SportBookApi.Migrations
                 name: "IX_Bookings_SportTypeId",
                 table: "Bookings",
                 column: "SportTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookingUser_UsersId",
+                table: "BookingUser",
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Facilities_AddressId",

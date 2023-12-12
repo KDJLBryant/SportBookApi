@@ -3,9 +3,9 @@
     public class FacilityDTO
     {
         public string Name { get; set; }
-        public User Owner { get; set; }
-        public Address Address { get; set; }
-        public List<SportType> SportTypes { get; set; }
-        public List<Review> Reviews { get; set; }
+        public int AddressId { get; set; }
+        public Address Address { get; set; } = new();
+        public List<SportType> SportTypes { get; set; } = new();
+        public List<Review> Reviews { get; set; } = new();
     }
 }

@@ -12,7 +12,7 @@ using SportBookApi.Data;
 namespace SportBookApi.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    [Migration("20231205202718_Init")]
+    [Migration("20231212183807_Init")]
     partial class Init
     {
         /// <inheritdoc />

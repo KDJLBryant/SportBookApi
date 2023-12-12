@@ -72,6 +72,37 @@ namespace SportBookApi.Model
             }
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateSportType(int id, [FromBody] SportTypeDTO sportTypeDto)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    SportType updatedSportType = await _repository.UpdateSportTypeAsync(id, sportTypeDto);
+
+                    if (updatedSportType == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        return CreatedAtAction(nameof(GetSportType), new { id = updatedSportType.Id }, updatedSportType);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500);
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<SportType>> DeleteSportType(int id)

@@ -8,8 +8,8 @@
         public int Duration { get; set; }
         public int FacilityId { get; set; }
         public int SportTypeId { get; set; }
-        public Facility Facility { get; set; }
-        public SportType SportType { get; set; }
-        public ICollection<User> Users { get; set; }
+        public Facility Facility { get; set; } = new();
+        public SportType SportType { get; set; } = new();
+        public List<User> Users { get; set; } = new();
     }
 }

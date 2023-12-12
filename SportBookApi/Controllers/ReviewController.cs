@@ -72,6 +72,37 @@ namespace SportBookApi.Model
             }
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateReview(int id, [FromBody] ReviewDTO reviewDto)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Review updatedReview = await _repository.UpdateReviewAsync(id, reviewDto);
+
+                    if (updatedReview == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        return CreatedAtAction(nameof(GetReview), new { id = updatedReview.Id }, updatedReview);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500);
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<Review>> DeleteReview(int id)

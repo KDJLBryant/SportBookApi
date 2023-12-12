@@ -26,12 +26,12 @@ namespace SportBookApi.Data.Interface
         Task<List<AddressDTO>> GetAddressesAsync();
         Task<AddressDTO> GetAddressAsync(int id);
         // Update
-        Task<User> UpdateUserAsync(User user);
-        Task<SportType> UpdateSportTypeAsync(int id, SportType sportType);
-        Task<Facility> UpdateFacilityAsync(int id, Facility facility);
-        Task<Booking> UpdateBookingAsync(int id, Booking booking);
-        Task<Review> UpdateReviewAsync(int id, Review review);
-        Task<AddressController> UpdateAddressAsync(int id, Address address);
+        Task<User> UpdateUserAsync(int id, UserDTO userDto);
+        Task<SportType> UpdateSportTypeAsync(int id, SportTypeDTO sportTypeDto);
+        Task<Facility> UpdateFacilityAsync(int id, FacilityDTO facilityDto);
+        Task<Booking> UpdateBookingAsync(int id, BookingDTO bookingDto);
+        Task<Review> UpdateReviewAsync(int id, ReviewDTO reviewDto);
+        Task<Address> UpdateAddressAsync(int id, AddressDTO addressDto);
         // Delete
         Task<bool> DeleteUserAsync(int id);
         Task<bool> DeleteSportTypeAsync(int id);

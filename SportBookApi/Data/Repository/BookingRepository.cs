@@ -342,34 +342,146 @@ namespace SportBookApi.Data.Repository
             return _mapper.Map<List<UserDTO>>(users);
         }
         // Update
-        public async Task<AddressController> UpdateAddressAsync(int id, Address address)
+        public async Task<Address> UpdateAddressAsync(int id, AddressDTO addressDto)
         {
-            throw new NotImplementedException();
+            Address chosenAddress;
+
+            using (var db = _dbContext)
+            {
+                chosenAddress = await db.Addresses.FirstOrDefaultAsync(x => x.Id == id);
+
+                if(chosenAddress == null)
+                {
+                    return null;
+                }
+
+                chosenAddress.Street = addressDto.Street;
+                chosenAddress.City = addressDto.City;  
+                chosenAddress.Municupality = addressDto.Municupality;
+                chosenAddress.ZipCode = addressDto.ZipCode;
+
+                await db.SaveChangesAsync();
+
+                return chosenAddress;
+            }
         }
 
-        public async Task<Booking> UpdateBookingAsync(int id, Booking booking)
+        public async Task<Booking> UpdateBookingAsync(int id, BookingDTO bookingDto)
         {
-            throw new NotImplementedException();
+            Booking chosenBooking;
+
+            using (var db = _dbContext)
+            {
+                chosenBooking = await db.Bookings.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (chosenBooking == null)
+                {
+                    return null;
+                }
+
+                // I will have to create seperate UpdateDTO for this to work 
+                chosenBooking.Date = bookingDto.Date;
+                chosenBooking.Duration = bookingDto.Duration;
+                chosenBooking.SportTypeId = bookingDto.SportTypeId;
+                chosenBooking.FacilityId = bookingDto.FacilityId;
+
+                await db.SaveChangesAsync();
+
+                return chosenBooking;
+            }
         }
 
-        public async Task<Facility> UpdateFacilityAsync(int id, Facility facility)
+        public async Task<Facility> UpdateFacilityAsync(int id, FacilityDTO facilityDto)
         {
-            throw new NotImplementedException();
+            Facility chosenFacility;
+
+            using (var db = _dbContext)
+            {
+                chosenFacility = await db.Facilities.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (chosenFacility == null)
+                {
+                    return null;
+                }
+
+                // I will have to create seperate UpdateDTO for this to work 
+                chosenFacility.Name = facilityDto.Name;
+                chosenFacility.AddressId = facilityDto.AddressId;
+
+                await db.SaveChangesAsync();
+
+                return chosenFacility;
+            }
         }
 
-        public async Task<Review> UpdateReviewAsync(int id, Review review)
+        public async Task<Review> UpdateReviewAsync(int id, ReviewDTO reviewDto)
         {
-            throw new NotImplementedException();
+            Review chosenReview;
+
+            using (var db = _dbContext)
+            {
+                chosenReview = await db.Reviews.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (chosenReview == null)
+                {
+                    return null;
+                }
+
+                // I will have to create seperate UpdateDTO for this to work 
+                chosenReview.WrittenReview = reviewDto.WrittenReview;
+                chosenReview.UserId = reviewDto.UserId;
+                chosenReview.FacilityId = reviewDto.FacilityId;
+
+                await db.SaveChangesAsync();
+
+                return chosenReview;
+            }
         }
 
-        public async Task<SportType> UpdateSportTypeAsync(int id, SportType sportType)
+        public async Task<SportType> UpdateSportTypeAsync(int id, SportTypeDTO sportTypeDto)
         {
-            throw new NotImplementedException();
+            SportType chosenSportType;
+
+            using (var db = _dbContext)
+            {
+                chosenSportType = await db.SportTypes.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (chosenSportType == null)
+                {
+                    return null;
+                }
+
+                // I will have to create seperate UpdateDTO for this to work 
+                chosenSportType.Name = sportTypeDto.Name;
+
+                await db.SaveChangesAsync();
+
+                return chosenSportType;
+            }
         }
 
-        public async Task<User> UpdateUserAsync(User user)
+        public async Task<User> UpdateUserAsync(int id, UserDTO userDto)
         {
-            throw new NotImplementedException();
+            User chosenUser;
+
+            using (var db = _dbContext)
+            {
+                chosenUser = await db.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (chosenUser == null)
+                {
+                    return null;
+                }
+
+                // I will have to create seperate UpdateDTO for this to work 
+                chosenUser.FirstName = userDto.FirstName;
+                chosenUser.LastName = userDto.LastName;
+                chosenUser.Age = userDto.Age;
+
+                await db.SaveChangesAsync();
+
+                return chosenUser;
+            }
         }
     }
 }

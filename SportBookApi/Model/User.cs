@@ -9,8 +9,8 @@
         public int SocialSecNumber { get; set; }
         public int Flag { get; set; }
         public int AddressId { get; set; }
-        public Address Address { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
+        public Address Address { get; set; } = new();
+        public List<Booking> Bookings { get; set; } = new();
         public List<Review> Reviews { get; set; } = new();
     }
 }

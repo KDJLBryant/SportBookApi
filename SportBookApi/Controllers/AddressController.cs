@@ -72,6 +72,37 @@ namespace SportBookApi.Model
             }
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateAddress(int id, [FromBody]AddressDTO addressDto)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Address updatedAddress = await _repository.UpdateAddressAsync(id, addressDto);
+
+                    if (updatedAddress == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        return CreatedAtAction(nameof(GetAddress), new { id = updatedAddress.Id }, updatedAddress);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500);
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<Address>> DeleteAddress(int id)
