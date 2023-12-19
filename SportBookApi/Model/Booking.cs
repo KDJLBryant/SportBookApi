@@ -1,5 +1,6 @@
 ﻿namespace SportBookApi.Model
 {
+    // Made FK's nullable in all entity classes due to cascade deletion error!
     public class Booking
     {
         public int Id { get; set; }

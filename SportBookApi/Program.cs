@@ -1,3 +1,4 @@
+using SportBookApi.Data;
 using SportBookApi.Data.Interface;
 using SportBookApi.Data.Repository;
 
@@ -26,4 +27,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+BookingContext.SeedData();
+
 app.Run();
+
+
