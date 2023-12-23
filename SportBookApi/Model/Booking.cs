@@ -1,10 +1,13 @@
-﻿namespace SportBookApi.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SportBookApi.Model
 {
-    // Made FK's nullable in all entity classes due to cascade deletion error!
+    // Made nullable and unRequired FK's due to cascade deletion errors!
     public class Booking
     {
         public int Id { get; set; }
-        public DateTime Date {  get; set; }
+        public DateTime Date {  get; } = DateTime.Now.Date;
+        [Required]
         public int Duration { get; set; }
         public int? FacilityId { get; set; }
         public int? SportTypeId { get; set; }

@@ -77,29 +77,22 @@ namespace SportBookApi.Model
         public async Task<IActionResult> UpdateBooking(int id, [FromBody] BookingDTO bookingDto)
         {
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    Booking updatedBooking = await _repository.UpdateBookingAsync(id, bookingDto);
+                Booking updatedBooking = await _repository.UpdateBookingAsync(id, bookingDto);
 
-                    if (updatedBooking == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        return CreatedAtAction(nameof(GetBooking), new { id = updatedBooking.Id }, updatedBooking);
-                    }
-                }
-                catch (Exception ex)
+                if (updatedBooking == null)
                 {
-                    return StatusCode(500);
+                    return NotFound();
+                }
+                else
+                {
+                    return CreatedAtAction(nameof(GetBooking), new { id = updatedBooking.Id }, updatedBooking);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(500);
             }
         }
 

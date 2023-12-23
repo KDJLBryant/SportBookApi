@@ -77,29 +77,22 @@ namespace SportBookApi.Model
         public async Task<IActionResult> UpdateReview(int id, [FromBody] ReviewDTO reviewDto)
         {
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    Review updatedReview = await _repository.UpdateReviewAsync(id, reviewDto);
+                Review updatedReview = await _repository.UpdateReviewAsync(id, reviewDto);
 
-                    if (updatedReview == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        return CreatedAtAction(nameof(GetReview), new { id = updatedReview.Id }, updatedReview);
-                    }
-                }
-                catch (Exception ex)
+                if (updatedReview == null)
                 {
-                    return StatusCode(500);
+                    return NotFound();
+                }
+                else
+                {
+                    return CreatedAtAction(nameof(GetReview), new { id = updatedReview.Id }, updatedReview);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(500);
             }
         }
 

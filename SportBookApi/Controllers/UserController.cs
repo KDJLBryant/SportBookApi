@@ -78,29 +78,22 @@ namespace SportBookApi.Model
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO userDto)
         {
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    User updatedUser = await _repository.UpdateUserAsync(id, userDto);
+                User updatedUser = await _repository.UpdateUserAsync(id, userDto);
 
-                    if (updatedUser == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        return CreatedAtAction(nameof(GetUser), new { id = updatedUser.Id }, updatedUser);
-                    }
-                }
-                catch (Exception ex)
+                if (updatedUser == null)
                 {
-                    return StatusCode(500);
+                    return NotFound();
+                }
+                else
+                {
+                    return CreatedAtAction(nameof(GetUser), new { id = updatedUser.Id }, updatedUser);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(500);
             }
         }
 

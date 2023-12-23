@@ -38,6 +38,9 @@ namespace SportBookApi.Data.Repository
 
             using (var db = _dbContext)
             {
+                booking.Facility = await db.Facilities.FirstOrDefaultAsync(x => x.Id == booking.FacilityId);
+                booking.SportType = await db.SportTypes.FirstOrDefaultAsync(x => x.Id == booking.SportTypeId);
+
                 await db.Bookings.AddAsync(booking);
                 await db.SaveChangesAsync();
             }
@@ -51,6 +54,8 @@ namespace SportBookApi.Data.Repository
 
             using (var db = _dbContext)
             {
+                facility.Address = await db.Addresses.FirstOrDefaultAsync(x => x.Id == facility.AddressId);
+
                 await db.Facilities.AddAsync(facility);
                 await db.SaveChangesAsync();
             }
@@ -65,6 +70,9 @@ namespace SportBookApi.Data.Repository
 
             using (var db = _dbContext)
             {
+                review.User = await db.Users.FirstOrDefaultAsync(x => x.Id == review.UserId);
+                review.Facility = await db.Facilities.FirstOrDefaultAsync(x => x.Id == review.FacilityId);
+
                 await db.Reviews.AddAsync(review);
                 await db.SaveChangesAsync();
             }
@@ -91,6 +99,8 @@ namespace SportBookApi.Data.Repository
 
             using (var db = _dbContext)
             {
+                user.Address = await db.Addresses.FirstOrDefaultAsync(x => x.Id == user.AddressId);
+
                 await db.Users.AddAsync(user);
                 await db.SaveChangesAsync();
             }
@@ -355,10 +365,11 @@ namespace SportBookApi.Data.Repository
                     return null;
                 }
 
-                chosenAddress.Street = addressDto.Street;
-                chosenAddress.City = addressDto.City;  
-                chosenAddress.Municupality = addressDto.Municupality;
-                chosenAddress.ZipCode = addressDto.ZipCode;
+                // Kinda ugly ternary. But it works and saves space ;)
+                chosenAddress.Street = (addressDto.Street != null) ? addressDto.Street : chosenAddress.Street;
+                chosenAddress.City = (addressDto.City != null) ? addressDto.City : chosenAddress.City;
+                chosenAddress.Municupality = (addressDto.Municupality != null) ? addressDto.Municupality : chosenAddress.Municupality;
+                chosenAddress.ZipCode = (addressDto.ZipCode != null) ? addressDto.ZipCode : chosenAddress.ZipCode;
 
                 await db.SaveChangesAsync();
 
@@ -379,11 +390,9 @@ namespace SportBookApi.Data.Repository
                     return null;
                 }
 
-                // I will have to create seperate UpdateDTO for this to work 
-                chosenBooking.Date = bookingDto.Date;
-                chosenBooking.Duration = bookingDto.Duration;
-                chosenBooking.SportTypeId = bookingDto.SportTypeId;
-                chosenBooking.FacilityId = bookingDto.FacilityId;
+                chosenBooking.Duration = (bookingDto.Duration != null) ? bookingDto.Duration : chosenBooking.Duration;
+                chosenBooking.SportTypeId = (bookingDto.SportTypeId != null) ? bookingDto.SportTypeId : chosenBooking.SportTypeId;
+                chosenBooking.FacilityId = (bookingDto.FacilityId != null) ? bookingDto.FacilityId : chosenBooking.FacilityId;
 
                 await db.SaveChangesAsync();
 
@@ -404,9 +413,8 @@ namespace SportBookApi.Data.Repository
                     return null;
                 }
 
-                // I will have to create seperate UpdateDTO for this to work 
-                chosenFacility.Name = facilityDto.Name;
-                chosenFacility.AddressId = facilityDto.AddressId;
+                chosenFacility.Name = (facilityDto.Name != null) ? facilityDto.Name : chosenFacility.Name;
+                chosenFacility.AddressId = (facilityDto.AddressId != null) ? facilityDto.AddressId : chosenFacility.AddressId;
 
                 await db.SaveChangesAsync();
 
@@ -427,10 +435,9 @@ namespace SportBookApi.Data.Repository
                     return null;
                 }
 
-                // I will have to create seperate UpdateDTO for this to work 
-                chosenReview.WrittenReview = reviewDto.WrittenReview;
-                chosenReview.UserId = reviewDto.UserId;
-                chosenReview.FacilityId = reviewDto.FacilityId;
+                chosenReview.WrittenReview = (reviewDto.WrittenReview != null) ? reviewDto.WrittenReview : chosenReview.WrittenReview;
+                chosenReview.UserId = (reviewDto.UserId != null) ? reviewDto.UserId : chosenReview.UserId;
+                chosenReview.FacilityId = (reviewDto.FacilityId != null) ? reviewDto.FacilityId : chosenReview.FacilityId;
 
                 await db.SaveChangesAsync();
 
@@ -451,8 +458,7 @@ namespace SportBookApi.Data.Repository
                     return null;
                 }
 
-                // I will have to create seperate UpdateDTO for this to work 
-                chosenSportType.Name = sportTypeDto.Name;
+                chosenSportType.Name = (sportTypeDto.Name != null) ? sportTypeDto.Name : chosenSportType.Name;
 
                 await db.SaveChangesAsync();
 
@@ -473,10 +479,9 @@ namespace SportBookApi.Data.Repository
                     return null;
                 }
 
-                // I will have to create seperate UpdateDTO for this to work 
-                chosenUser.FirstName = userDto.FirstName;
-                chosenUser.LastName = userDto.LastName;
-                chosenUser.Age = userDto.Age;
+                chosenUser.FirstName = (userDto.FirstName != null) ? userDto.FirstName : chosenUser.FirstName;
+                chosenUser.LastName = (userDto.LastName != null) ? userDto.LastName : chosenUser.LastName;
+                chosenUser.Age = (userDto.Age != null) ? userDto.Age : chosenUser.Age;
 
                 await db.SaveChangesAsync();
 
