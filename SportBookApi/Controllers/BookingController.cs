@@ -52,13 +52,13 @@ namespace SportBookApi.Model
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBooking([FromBody] BookingDTO bookingDto)
+        public async Task<IActionResult> CreateBooking([FromBody] BookingDTO bookingDto, int userId)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Booking booking = await _repository.CreateBookingAsync(bookingDto);
+                    Booking booking = await _repository.CreateBookingAsync(bookingDto, userId);
                     return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);
                 }
                 else

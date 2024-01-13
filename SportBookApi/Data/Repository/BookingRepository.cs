@@ -32,7 +32,7 @@ namespace SportBookApi.Data.Repository
             return address;
         }
 
-        public async Task<Booking> CreateBookingAsync(BookingDTO bookingDto)
+        public async Task<Booking> CreateBookingAsync(BookingDTO bookingDto, int userId)
         {
             Booking booking = _mapper.Map<Booking>(bookingDto);
 
@@ -40,6 +40,7 @@ namespace SportBookApi.Data.Repository
             {
                 booking.Facility = await db.Facilities.FirstOrDefaultAsync(x => x.Id == booking.FacilityId);
                 booking.SportType = await db.SportTypes.FirstOrDefaultAsync(x => x.Id == booking.SportTypeId);
+                booking.Users.Add(await db.Users.FirstOrDefaultAsync(x => x.Id == userId));
 
                 await db.Bookings.AddAsync(booking);
                 await db.SaveChangesAsync();
@@ -120,6 +121,22 @@ namespace SportBookApi.Data.Repository
                 }
                 else
                 {
+                    List<User> usersToUpdate = await db.Users.Where(x => x.AddressId == a.Id).ToListAsync();
+                    List<Facility> facilitiesToUpdate = await db.Facilities.Where(x => x.AddressId == a.Id).ToListAsync();
+                    
+                    var tasks = new List<Task>();
+
+                    foreach (User u in usersToUpdate)
+                    {
+                        u.AddressId = null;
+                        tasks.Add(db.SaveChangesAsync());
+                    }
+                    foreach (Facility f in facilitiesToUpdate)
+                    {
+                        f.AddressId = null;
+                        tasks.Add(db.SaveChangesAsync());
+                    }
+                    await Task.WhenAll(tasks);
                     db.Addresses.Remove(a);
                     await db.SaveChangesAsync();
                     return true;
@@ -158,6 +175,17 @@ namespace SportBookApi.Data.Repository
                 }
                 else
                 {
+
+                    var tasks = new List<Task>();
+
+                    List<Review> reviewsToUpdate = await db.Reviews.Where(x => x.FacilityId == f.Id).ToListAsync();
+
+                    foreach (Review r in reviewsToUpdate)
+                    {
+                        r.UserId = null;
+                        tasks.Add(db.SaveChangesAsync());
+                    }
+                    await Task.WhenAll(tasks);
                     db.Facilities.Remove(f);
                     await db.SaveChangesAsync();
                     return true;
@@ -165,9 +193,23 @@ namespace SportBookApi.Data.Repository
             }
         }
 
-        public Task<bool> DeleteReviewAsync(int id)
+        public async Task<bool> DeleteReviewAsync(int id)
         {
-            throw new NotImplementedException();
+            using (var db = _dbContext)
+            {
+                Review r = await db.Reviews.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (r == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    db.Reviews.Remove(r);
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+            }
         }
 
         public async Task<bool> DeleteSportTypeAsync(int id)
@@ -201,6 +243,22 @@ namespace SportBookApi.Data.Repository
                 }
                 else
                 {
+                    var tasks = new List<Task>();
+
+                    List<Review> reviewsToUpdate = await db.Reviews.Where(x => x.UserId == u.Id).ToListAsync();
+                    List<Booking> bookingsToUpdate = await db.Bookings.Where(x => x.Users.Contains(u)).ToListAsync();
+
+                    foreach (Review r in reviewsToUpdate)
+                    {
+                        r.UserId = null;
+                        tasks.Add(db.SaveChangesAsync());
+                    }
+                    foreach (Booking b in bookingsToUpdate)
+                    {
+                        b.Users.Remove(u);
+                        tasks.Add(db.SaveChangesAsync());
+                    }
+                    await Task.WhenAll(tasks);
                     db.Users.Remove(u);
                     await db.SaveChangesAsync();
                     return true;

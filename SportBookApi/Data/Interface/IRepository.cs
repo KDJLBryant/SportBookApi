@@ -9,7 +9,7 @@ namespace SportBookApi.Data.Interface
         Task<User> CreateUserAsync(UserDTO userDto);
         Task<SportType> CreateSportTypeAsync(SportTypeDTO sportTypeDto);
         Task<Facility> CreateFacilityAsync(FacilityDTO facilityDto);
-        Task<Booking> CreateBookingAsync(BookingDTO bookingDto);
+        Task<Booking> CreateBookingAsync(BookingDTO bookingDto, int userId);
         Task<Review> CreateReviewAsync(ReviewDTO reviewDto);
         Task<Address> CreateAddressAsync(AddressDTO addressDto);
         // Read
