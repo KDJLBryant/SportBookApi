@@ -121,22 +121,15 @@ namespace SportBookApi.Data.Repository
                 }
                 else
                 {
-                    List<User> usersToUpdate = await db.Users.Where(x => x.AddressId == a.Id).ToListAsync();
-                    List<Facility> facilitiesToUpdate = await db.Facilities.Where(x => x.AddressId == a.Id).ToListAsync();
-                    
-                    var tasks = new List<Task>();
-
-                    foreach (User u in usersToUpdate)
+                    foreach (User u in await db.Users.Where(x => x.AddressId == a.Id).ToListAsync())
                     {
                         u.AddressId = null;
-                        tasks.Add(db.SaveChangesAsync());
                     }
-                    foreach (Facility f in facilitiesToUpdate)
+                    foreach (Facility f in await db.Facilities.Where(x => x.AddressId == a.Id).ToListAsync())
                     {
                         f.AddressId = null;
-                        tasks.Add(db.SaveChangesAsync());
                     }
-                    await Task.WhenAll(tasks);
+
                     db.Addresses.Remove(a);
                     await db.SaveChangesAsync();
                     return true;
@@ -175,17 +168,11 @@ namespace SportBookApi.Data.Repository
                 }
                 else
                 {
-
-                    var tasks = new List<Task>();
-
-                    List<Review> reviewsToUpdate = await db.Reviews.Where(x => x.FacilityId == f.Id).ToListAsync();
-
-                    foreach (Review r in reviewsToUpdate)
+                    foreach (Review r in await db.Reviews.Where(x => x.FacilityId == f.Id).ToListAsync())
                     {
                         r.UserId = null;
-                        tasks.Add(db.SaveChangesAsync());
                     }
-                    await Task.WhenAll(tasks);
+
                     db.Facilities.Remove(f);
                     await db.SaveChangesAsync();
                     return true;
@@ -243,22 +230,15 @@ namespace SportBookApi.Data.Repository
                 }
                 else
                 {
-                    var tasks = new List<Task>();
-
-                    List<Review> reviewsToUpdate = await db.Reviews.Where(x => x.UserId == u.Id).ToListAsync();
-                    List<Booking> bookingsToUpdate = await db.Bookings.Where(x => x.Users.Contains(u)).ToListAsync();
-
-                    foreach (Review r in reviewsToUpdate)
+                    foreach (Review r in await db.Reviews.Where(x => x.UserId == u.Id).ToListAsync())
                     {
                         r.UserId = null;
-                        tasks.Add(db.SaveChangesAsync());
                     }
-                    foreach (Booking b in bookingsToUpdate)
+                    foreach (Booking b in await db.Bookings.Where(x => x.Users.Contains(u)).ToListAsync())
                     {
                         b.Users.Remove(u);
-                        tasks.Add(db.SaveChangesAsync());
                     }
-                    await Task.WhenAll(tasks);
+
                     db.Users.Remove(u);
                     await db.SaveChangesAsync();
                     return true;
