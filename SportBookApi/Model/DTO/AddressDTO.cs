@@ -4,6 +4,7 @@ namespace SportBookApi.Model.DTO
 {
     public class AddressDTO
     {
+        public int Id { get; set; }
         [Required]
         [MaxLength(50)]
         public string Street { get; set; }

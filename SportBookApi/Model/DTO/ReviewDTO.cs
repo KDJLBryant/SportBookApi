@@ -4,6 +4,7 @@ namespace SportBookApi.Model.DTO
 {
     public class ReviewDTO
     {
+        public int Id { get; set; }
         [Required]
         [MaxLength(255)]
         public string WrittenReview { get; set; }

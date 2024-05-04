@@ -4,11 +4,11 @@ namespace SportBookApi.Model.DTO
 {
     public class BookingDTO
     {
+        public int Id { get; set; }
         [Required]
         public int Duration { get; set; }
-        [Required]
         public int? FacilityId { get; set; }
-        [Required]
         public int? SportTypeId { get; set; }
+        public int? UserId { get; set; }
     }
 }

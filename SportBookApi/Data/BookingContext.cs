@@ -36,6 +36,10 @@ namespace SportBookApi.Data
                 {
                     Duration = 30,
                 };
+                Booking b2 = new Booking
+                {
+                    Duration = 20,
+                };
 
                 Facility f1 = new Facility
                 {
@@ -59,11 +63,21 @@ namespace SportBookApi.Data
                     Age = 21,
                     SocialSecNumber = 240302,
                 };
+                User u2 = new User
+                {
+                    FirstName = "Jim",
+                    LastName = "Mgee",
+                    Age = 55,
+                    SocialSecNumber = 546525,
+                };
 
                 // Establish relationships
                 b1.Facility = f1;
                 b1.SportType = sT1;
-                b1.Users.Add(u1);
+                b1.User = u1;
+                b2.Facility = f1;
+                b2.SportType = sT1;
+                b2.User = u2;
 
                 f1.Address = a1;
                 f1.SportTypes.Add(sT1);
@@ -75,9 +89,11 @@ namespace SportBookApi.Data
                 u1.Address = a1;
                 u1.Bookings.Add(b1);
                 u1.Reviews.Add(r1);
+                u2.Address = a1;
+                u2.Bookings.Add(b2);
 
                 // Add entities to DbContext
-                DbContext.AddRange(a1, b1, f1, r1, sT1, u1);
+                DbContext.AddRange(a1, b1, b2, f1, r1, sT1, u1, u2);
 
                 // Save changes to the database
                 DbContext.SaveChanges();

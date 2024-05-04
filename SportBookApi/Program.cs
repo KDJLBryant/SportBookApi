@@ -4,6 +4,17 @@ using SportBookApi.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowReactFW",
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyOrigin();
+                      });
+});
+
 // Add services to the container.
 builder.Services.AddScoped<IRepository, BookingRepository>();
 builder.Services.AddControllers();
@@ -15,6 +26,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseCors("AllowReactFW");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

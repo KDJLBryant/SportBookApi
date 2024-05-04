@@ -40,7 +40,7 @@ namespace SportBookApi.Data.Repository
             {
                 booking.Facility = await db.Facilities.FirstOrDefaultAsync(x => x.Id == booking.FacilityId);
                 booking.SportType = await db.SportTypes.FirstOrDefaultAsync(x => x.Id == booking.SportTypeId);
-                booking.Users.Add(await db.Users.FirstOrDefaultAsync(x => x.Id == userId));
+                booking.User = await db.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
                 await db.Bookings.AddAsync(booking);
                 await db.SaveChangesAsync();
@@ -233,10 +233,6 @@ namespace SportBookApi.Data.Repository
                     foreach (Review r in await db.Reviews.Where(x => x.UserId == u.Id).ToListAsync())
                     {
                         r.UserId = null;
-                    }
-                    foreach (Booking b in await db.Bookings.Where(x => x.Users.Contains(u)).ToListAsync())
-                    {
-                        b.Users.Remove(u);
                     }
 
                     db.Users.Remove(u);
